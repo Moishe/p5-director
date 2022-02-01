@@ -1,20 +1,15 @@
 let Director = class {
   max_actors
   seed_actors
-  max_age
-  min_age
 
   actors = []
   next_free = -1
 
   constructor(max_actors,
-    seed_actors,
-    max_age,
-    min_age) {
+    seed_actors) {
     this.max_actors = max_actors
     this.seed_actors = seed_actors
-    this.max_age = max_age
-    this.min_age = min_age
+    this.generation = 0
   }
 
   initialize() {
@@ -31,9 +26,10 @@ let Director = class {
     this.next_free = this.max_actors - 1
   }
 
-  process_and_draw(generation) {
+  process_and_draw() {
+    this.generation += 1
     for (let i = 0; i < this.actors.length; i++) {
-      if (!this.actors[i].is_active || this.actors[i].generation_created == generation) {
+      if (!this.actors[i].is_active || this.actors[i].generation_created == this.generation) {
         continue
       }
 
@@ -44,7 +40,7 @@ let Director = class {
       } else if (this.should_spawn(this.actors[i])) {
         let actor = this.spawn(this.actors[i])
         if (actor) {
-          actor.generation_created = generation
+          actor.generation_created = this.generation
         }
       }
     }
@@ -78,7 +74,7 @@ let Director = class {
         y: height / 2,
         d: 0,
         v: 0,
-        lifetime: Math.floor(Math.random() * this.max_age) + this.min_age,
+        lifetime: this.default_lifetime(),
         age: 0,
         is_active: true,
         generation_created: 0,
@@ -156,5 +152,12 @@ let Director = class {
 
   should_spawn(actor) {
     return Math.random() < 0.1
+  }
+
+  /*
+   * Default lifetime to use for an actor
+   */
+  default_lifetime() {
+    return 100
   }
 }
