@@ -6,6 +6,8 @@ velocity), actor "death" based on an age and lifespan, and actor "spawning".
 
 # Using the Director for a Physarum Simulation
 
+Here's a live example of the code described below: https://editor.p5js.org/moishe/sketches/tYuJpHUGy
+
 The `/examples/physarum` directory contains an implementation of a simple
 Physarum simulation using the Director. Let's walk through how this is done:
 
